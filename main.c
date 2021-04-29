@@ -1,37 +1,45 @@
-// LED = PA5(D13)
-// Clock access of AHB1
-// RCC -> ABH1ENR 
-// GPIOx_MODRER = Direction Register
-// GPIOx_ODR = Data Register
+// Program: Finds the nth Prime Number in Sequence
+// Input: n
+// Output: nth Prime
+/* Steps:
+ *      1. Create Array to Hold Only Prime Values
+ *      2. Create Counter to Value n
+ *      3. Create Loop That Checks if Test Value is Composite
+ *      4. If Not Composite, Add to Prime Array
+ *      5. After Count Reaches n, Return Array Value at Count Index
+*/
 
-#include "stm32f4xx.h"      //Device Header
+#include<stdio.h>
 
-
-void delayMs(int delay);
-
-int main(void)
-{
-	RCC -> AHB1ENR |= 1;         // enable GPIOA clock
+int nthPrime(int n) {
+	int i, flag = 0;
 	
-	GPIOA -> MODER |= 0x400;   //Sets indexed pin (PA5) to 01 ( 0100 0000 0000 = 0x400h )
-	
-	while(1) {
-		
-		
-		GPIOA -> ODR |= 0x20;    // 0x20 = 0010 0000 (Wrote to 5th bit of register)
-		delayMs(1000);
-		GPIOA -> ODR  &= ~0x20;
-		delayMs(1000);
+	for (i = 2; i <= (n/2); ++i) {
+		if (n % i == 0)
+		{
+			flag = 1;
+			break;
+		}
 	}
-}
-//Taking into account 16MHz system lock
 
-void delayMs(volatile int delay)
-{
-volatile int i;
-	
-	for (; delay > 0; delay--) {
-			for(i = 0; i < 3195; i++);
+	if (n == 1) {
+		printf("Value 1 is Not Prime");
 	}
+	else {
+		if (flag == 0)
+		printf("Prime.");
+		else
+		printf("Composite.");
+	}
+
+
 }
 
+
+int main() {
+
+	nthPrime(4);
+	nthPrime(3);
+
+	return 0;
+}
